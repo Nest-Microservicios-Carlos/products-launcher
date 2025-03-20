@@ -16,26 +16,26 @@ services:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
   
-  products-ms:
-    build: ./products-ms
+  products-micro-service:
+    build: ./products-micro-service
     ports:
       - "3001:3001"
     volumes:
-      - ./products-ms/src:/usr/src/app/src
+      - ./products-micro-service/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3001
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=file:./dev.db
   
-  orders-ms:
+  orders-micro-service:
     depends_on:
       - orders-db
-    build: ./orders-ms
+    build: ./orders-micro-service
     ports:
       - "3002:3002"
     volumes:
-      - ./orders-ms/src:/usr/src/app/src
+      - ./orders-micro-service/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3002
@@ -47,7 +47,7 @@ services:
     image: postgres:16.2
     restart: always
     volumes:
-      - ./orders-ms/postgres:/var/lib/postgresql/data
+      - ./orders-micro-service/postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
