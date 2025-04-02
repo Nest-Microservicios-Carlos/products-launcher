@@ -69,3 +69,33 @@ services:
       - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL},
       - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL},
       - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
+  
+  auth-micro-service:
+    depends_on:
+      - auth-db
+    build: ./auth-micro-service
+    ports:
+      - ${AUTH_MS_PORT}:${AUTH_MS_PORT}
+    volumes:
+      - ./auth-micro-service/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=${AUTH_MS_PORT}
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${AUTH_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+  
+  auth-db:
+    container_name: auth-database
+    image: mongo:5
+    restart: always
+    command: ["mongod", "--replSet", "rs0", "--keyFile", "/etc/mongo-keyfile"]
+    volumes:
+      - ./auth-micro-service/mongo:/data/db
+      - ./auth-micro-service/mongo-keyfile:/etc/mongo-keyfile
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: authdb
