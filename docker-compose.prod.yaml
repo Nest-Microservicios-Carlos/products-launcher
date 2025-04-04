@@ -7,7 +7,7 @@ services:
     build: 
       context: ./client-gateway
       dockerfile: dockerfile.prod
-    image: client-gateway-prod
+    image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/client-gateway-prod
     ports:
       - ${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}
     environment:
@@ -18,7 +18,7 @@ services:
     build: 
       context: ./auth-micro-service
       dockerfile: dockerfile.prod
-    image: auth-micro-service-prod
+    image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/auth-micro-service-prod
     ports:
       - ${AUTH_MS_PORT}:${AUTH_MS_PORT}
     environment:
@@ -31,7 +31,7 @@ services:
     build:
       context: ./products-micro-service
       dockerfile: dockerfile.prod
-    image: products-micro-service-prod
+    image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/products-micro-service-prod
     environment:
       - PORT=3001
       - NATS_SERVERS=nats://nats-server:4222
@@ -43,7 +43,7 @@ services:
       dockerfile: dockerfile.prod
       args:
         - ORDERS_DATABASE_URL=${ORDERS_DATABASE_URL}
-    image: orders-micro-service-prod
+    image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/orders-micro-service-prod
     environment:
       - PORT=3002
       - NATS_SERVERS=nats://nats-server:4222
@@ -53,7 +53,7 @@ services:
     build: 
       context: ./payments-micro-service
       dockerfile: dockerfile.prod
-    image: payments-micro-service-prod
+    image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/payments-micro-service-prod
     ports:
       - ${PAYMENT_MS_PORT}:${PAYMENT_MS_PORT}
     environment:
