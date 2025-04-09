@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: products-micro-service-prod
+  name: products-micro-service-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: products-micro-service-prod
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: products-micro-service-prod
+    spec:
+      containers:
+      - image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/products-micro-service-prod
+        name: products-micro-service-prod
+        env:
+        - name: PORT
+          value: "3001"
+        - name: NATS_SERVERS
+          value: "nats://nats"
+        - name: DATABASE_URL
+          value: "file:./dev.db"
+        resources: {}
+status: {}

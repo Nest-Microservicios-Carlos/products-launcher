@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: orders-micro-service-prod
+  name: orders-micro-service-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders-micro-service-prod
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: orders-micro-service-prod
+    spec:
+      containers:
+      - image: northamerica-south1-docker.pkg.dev/microservicios-nestjs-455721/nest-registry/orders-micro-service-prod
+        name: orders-micro-service-prod
+        env:
+        - name: PORT
+          value: "3002"
+        - name: NATS_SERVERS
+          value: "nats://nats"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: orders-secrets
+              key: databse_url
+        resources: {}
+status: {}
